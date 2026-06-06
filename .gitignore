@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+._*
+
+
+# Java / Maven
+java_core/target/
+*.class
+*.jar
+!java_core/target/testpipeline.jar
+
+# Models and reports (generated artifacts)
+models_store/*.pkl
+reports/*.json
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# HuggingFace cache
+.cache/
+models/

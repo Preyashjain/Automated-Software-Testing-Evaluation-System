@@ -1,0 +1,122 @@
+[
+  {
+    "id": "319d8792-fd2e-4785-aa61-895922d2509a",
+    "domain": "database",
+    "code_snippet": "def test_connection_pool():\n    with pool.acquire() as conn:\n        assert conn.is_connected()\n        result = conn.execute('SELECT 1')\n        assert result.fetchone()[0] == 1",
+    "description": "Database connection testing: tests database connection pool acquires connections and executes basic SELECT queries successfully."
+  },
+  {
+    "id": "68e30af6-c634-48b3-be00-d26748863784",
+    "domain": "database",
+    "code_snippet": "def test_migration_up():\n    migrator.up('001_create_users')\n    assert table_exists('users')\n    cols = get_columns('users')\n    assert 'email' in cols",
+    "description": "Database migration testing: verifies database migration creates users table with expected email column schema."
+  },
+  {
+    "id": "c21d0f4f-dcb2-46e5-b430-af315df5e98f",
+    "domain": "database",
+    "code_snippet": "def test_transaction_rollback():\n    try:\n        with db.transaction():\n            db.insert('orders', {'total': 100})\n            raise Exception('fail')\n    except Exception:\n        pass\n    assert db.count('orders') == 0",
+    "description": "Database transaction testing: tests transaction rollback prevents partial data commits when an error occurs mid-transaction."
+  },
+  {
+    "id": "590c9aa8-5bd4-46ab-bae8-0993bdbd4311",
+    "domain": "database",
+    "code_snippet": "def test_index_performance():\n    explain = db.explain('SELECT * FROM orders WHERE user_id = 1')\n    assert 'Index Scan' in explain",
+    "description": "Database query optimization testing: checks query execution plan uses index scan for filtered queries on indexed user_id column."
+  },
+  {
+    "id": "3a3f8adc-f99c-433d-aee8-095ef9ce6dfa",
+    "domain": "database",
+    "code_snippet": "def test_foreign_key():\n    with pytest.raises(IntegrityError):\n        db.insert('orders', {'user_id': 99999, 'total': 50})",
+    "description": "Database constraint testing: verifies foreign key constraint prevents inserting orders referencing non-existent user IDs."
+  },
+  {
+    "id": "230f56c8-3ab2-487f-9e72-d896dda610ef",
+    "domain": "database",
+    "code_snippet": "def test_unique_constraint():\n    db.insert('users', {'email': 'a@b.com'})\n    with pytest.raises(IntegrityError):\n        db.insert('users', {'email': 'a@b.com'})",
+    "description": "Database integrity testing: tests unique constraint on email column rejects duplicate user registration attempts."
+  },
+  {
+    "id": "fabac0bb-2793-4810-a956-f4f1ed7ebb3a",
+    "domain": "database",
+    "code_snippet": "def test_stored_procedure():\n    result = db.call('calculate_total', [1, 2, 3])\n    assert result == 6",
+    "description": "Database stored procedure testing: tests stored procedure calculate_total returns correct sum for provided input parameters."
+  },
+  {
+    "id": "2779b9a7-2e1d-40a0-903c-ff7d603094a4",
+    "domain": "database",
+    "code_snippet": "def test_backup_restore():\n    backup = db.create_backup()\n    db.truncate('users')\n    db.restore(backup)\n    assert db.count('users') > 0",
+    "description": "Database backup testing: verifies database backup and restore operations preserve all user records intact."
+  },
+  {
+    "id": "b5a89393-fa3b-4cda-95ac-bd96dcc3af9d",
+    "domain": "database",
+    "code_snippet": "def test_replication_lag():\n    primary.insert('events', {'type': 'test'})\n    time.sleep(1)\n    replica_row = replica.fetch('events', latest=True)\n    assert replica_row is not None",
+    "description": "Database replication testing: tests read replica synchronizes data from primary within acceptable replication lag threshold."
+  },
+  {
+    "id": "8bdf38b2-74e6-4313-8e01-f6d6c6c82037",
+    "domain": "database",
+    "code_snippet": "def test_connection_timeout():\n    with pytest.raises(TimeoutError):\n        db.connect(timeout=0.001)",
+    "description": "Database connectivity testing: checks database connection respects configured timeout and raises error on unreachable host."
+  },
+  {
+    "id": "054f8344-a397-4acc-b118-afabff7bc0c5",
+    "domain": "database",
+    "code_snippet": "def test_json_column():\n    db.insert('configs', {'settings': {'theme': 'dark'}})\n    row = db.fetch('configs', id=1)\n    assert row['settings']['theme'] == 'dark'",
+    "description": "Database JSON column testing: tests JSON column type stores and retrieves nested configuration objects correctly."
+  },
+  {
+    "id": "086e5eda-ef60-4727-8c6d-4afc8c434e57",
+    "domain": "database",
+    "code_snippet": "def test_full_text_search():\n    results = db.search('products', 'wireless headphones')\n    assert len(results) > 0\n    assert all('headphone' in r['name'].lower() for r in results)",
+    "description": "Database full-text search testing: verifies full-text search returns relevant product matches for natural language queries."
+  },
+  {
+    "id": "3fd00cd3-78ca-44e9-b518-1629a869f39e",
+    "domain": "database",
+    "code_snippet": "def test_partition_pruning():\n    explain = db.explain(\"SELECT * FROM logs WHERE created_at > '2024-01-01'\")\n    assert 'Partition' in explain",
+    "description": "Database partitioning testing: tests query optimizer performs partition pruning for date-filtered queries on partitioned tables."
+  },
+  {
+    "id": "d1f993cc-840e-41d5-860c-8280c837efea",
+    "domain": "database",
+    "code_snippet": "def test_deadlock_handling():\n    t1 = Thread(target=transfer, args=(1, 2))\n    t2 = Thread(target=transfer, args=(2, 1))\n    t1.start(); t2.start()\n    t1.join(); t2.join()\n    assert get_balance(1) + get_balance(2) == 1000",
+    "description": "Database concurrency testing: checks concurrent transfer operations handle deadlocks without losing total account balance integrity."
+  },
+  {
+    "id": "0c398c46-0f0a-4ea8-a49f-22bca91a8f61",
+    "domain": "database",
+    "code_snippet": "def test_soft_delete():\n    db.soft_delete('users', id=5)\n    assert db.fetch('users', id=5) is None\n    assert db.fetch('users', id=5, include_deleted=True) is not None",
+    "description": "Database soft delete testing: tests soft delete marks records as deleted while preserving data for audit trail queries."
+  },
+  {
+    "id": "b4b32322-b07d-46db-8aea-11fe1fbae33b",
+    "domain": "database",
+    "code_snippet": "def test_connection_limit():\n    conns = [pool.acquire() for _ in range(max_connections)]\n    with pytest.raises(PoolExhausted):\n        pool.acquire()",
+    "description": "Database connection pool testing: verifies connection pool enforces maximum connection limit and rejects excess acquire requests."
+  },
+  {
+    "id": "1def4c91-6a2e-4613-b985-653b48ab4ee0",
+    "domain": "database",
+    "code_snippet": "def test_schema_validation():\n    schema = db.get_schema('orders')\n    assert schema['total']['type'] == 'decimal'\n    assert schema['total']['nullable'] is False",
+    "description": "Database schema testing: tests schema introspection returns correct column types and nullability constraints."
+  },
+  {
+    "id": "b5b53f8d-4981-4e23-b31d-01474723cb1c",
+    "domain": "database",
+    "code_snippet": "def test_bulk_insert():\n    rows = [{'name': f'item_{i}'} for i in range(1000)]\n    db.bulk_insert('items', rows)\n    assert db.count('items') == 1000",
+    "description": "Database bulk operation testing: checks bulk insert operation efficiently loads 1000 rows into items table."
+  },
+  {
+    "id": "bae860f0-d61c-4d07-b69a-50e37de56295",
+    "domain": "database",
+    "code_snippet": "def test_query_timeout():\n    with pytest.raises(QueryTimeout):\n        db.execute('SELECT pg_sleep(60)', timeout=1)",
+    "description": "Database query timeout testing: tests long-running queries are terminated when exceeding configured query timeout limit."
+  },
+  {
+    "id": "9f72f7a7-316f-4604-8972-67d2a9d1767e",
+    "domain": "database",
+    "code_snippet": "SELECT 1",
+    "description": "Database trivial query for minimal input testing."
+  }
+]

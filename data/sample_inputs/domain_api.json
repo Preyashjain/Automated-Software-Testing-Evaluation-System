@@ -1,0 +1,122 @@
+[
+  {
+    "id": "efa78328-c5c0-4800-904a-3e76afbe423b",
+    "domain": "api",
+    "code_snippet": "@Test\npublic void testGetUsers() {\n    Response r = given().get(\"/api/users\");\n    assertEquals(200, r.statusCode());\n}",
+    "description": "REST API endpoint testing: tests GET /api/users endpoint returns HTTP 200 and a valid JSON array of user objects."
+  },
+  {
+    "id": "5734e68c-c5bc-463b-9820-b099edd2157e",
+    "domain": "api",
+    "code_snippet": "def test_create_order():\n    resp = client.post('/api/orders', json={'item': 'book'})\n    assert resp.status_code == 201\n    assert 'id' in resp.json()",
+    "description": "REST API POST testing: verifies POST /api/orders creates a new order and returns 201 with an assigned order ID."
+  },
+  {
+    "id": "261a7598-b36d-4ce8-9f91-668d6470ac1e",
+    "domain": "api",
+    "code_snippet": "def test_auth_token():\n    r = requests.post('/api/auth', data=creds)\n    assert r.status_code == 200\n    assert 'token' in r.json()",
+    "description": "API authentication testing: tests authentication endpoint returns a valid JWT token for correct username and password credentials."
+  },
+  {
+    "id": "77559784-cbc2-41db-bdd0-7a44b63e45f6",
+    "domain": "api",
+    "code_snippet": "def test_rate_limit():\n    for i in range(100):\n        r = client.get('/api/data')\n    assert r.status_code == 429",
+    "description": "API rate limiting testing: checks API rate limiting returns 429 Too Many Requests after exceeding the configured request threshold."
+  },
+  {
+    "id": "b82d98d2-bf9b-41e7-9eed-193378262342",
+    "domain": "api",
+    "code_snippet": "def test_pagination_api():\n    r = client.get('/api/items?page=2&size=10')\n    data = r.json()\n    assert len(data['items']) == 10\n    assert data['page'] == 2",
+    "description": "API pagination testing: tests paginated API response returns correct page size and page number metadata fields."
+  },
+  {
+    "id": "a95c142f-79ed-42e3-b882-608036dfd981",
+    "domain": "api",
+    "code_snippet": "def test_invalid_payload():\n    r = client.post('/api/users', json={'email': 'bad'})\n    assert r.status_code == 400\n    assert 'email' in r.json()['errors']",
+    "description": "API validation testing: verifies API returns 400 Bad Request with field-level validation errors for malformed input payloads."
+  },
+  {
+    "id": "afa1dbd2-24d4-4062-8f3b-d4951ce967af",
+    "domain": "api",
+    "code_snippet": "def test_delete_resource():\n    r = client.delete(f'/api/items/{item_id}')\n    assert r.status_code == 204\n    r2 = client.get(f'/api/items/{item_id}')\n    assert r2.status_code == 404",
+    "description": "API DELETE testing: tests DELETE endpoint removes resource and subsequent GET returns 404 Not Found."
+  },
+  {
+    "id": "9e9b706d-4632-4703-9bc9-78b448adaf1f",
+    "domain": "api",
+    "code_snippet": "def test_cors_headers():\n    r = client.options('/api/data', headers={'Origin': 'http://localhost'})\n    assert 'Access-Control-Allow-Origin' in r.headers",
+    "description": "API CORS testing: checks CORS preflight OPTIONS request returns appropriate Access-Control-Allow-Origin headers."
+  },
+  {
+    "id": "b02ba641-88e0-4f97-ade3-2299dfe6c282",
+    "domain": "api",
+    "code_snippet": "def test_api_versioning():\n    r = client.get('/api/v2/products')\n    assert r.status_code == 200\n    assert r.headers.get('X-API-Version') == '2.0'",
+    "description": "API versioning testing: tests versioned API endpoint responds correctly and includes API version header in response."
+  },
+  {
+    "id": "56fbcab7-cedd-4f46-a3fa-df537757e6e5",
+    "domain": "api",
+    "code_snippet": "def test_webhook_delivery():\n    r = client.post('/api/webhooks/test', json={'event': 'order.created'})\n    assert r.status_code == 200\n    assert r.json()['delivered'] is True",
+    "description": "API webhook testing: verifies webhook test endpoint successfully delivers event payload to configured callback URL."
+  },
+  {
+    "id": "600f4381-b054-4cef-a525-52695c5b218e",
+    "domain": "api",
+    "code_snippet": "def test_graphql_query():\n    r = client.post('/graphql', json={'query': '{ users { id name } }'})\n    assert r.status_code == 200\n    assert 'users' in r.json()['data']",
+    "description": "GraphQL API testing: tests GraphQL query endpoint returns user data matching the requested schema fields."
+  },
+  {
+    "id": "aa4ce5d5-194c-4513-af42-335aeb15b51b",
+    "domain": "api",
+    "code_snippet": "def test_bulk_import():\n    r = client.post('/api/import', files={'file': csv_data})\n    assert r.status_code == 202\n    assert r.json()['job_id']",
+    "description": "API bulk import testing: checks bulk CSV import endpoint accepts file upload and returns async job identifier."
+  },
+  {
+    "id": "c2e4500f-f66e-4e31-873c-5f995acd9558",
+    "domain": "api",
+    "code_snippet": "def test_health_check():\n    r = client.get('/api/health')\n    assert r.status_code == 200\n    body = r.json()\n    assert body['status'] == 'healthy'",
+    "description": "API health check testing: tests health check endpoint reports healthy status for all dependent services."
+  },
+  {
+    "id": "1d303243-59b8-47bc-a6cb-967384bc24f6",
+    "domain": "api",
+    "code_snippet": "def test_idempotency():\n    key = 'idem-123'\n    r1 = client.post('/api/pay', json=payment, headers={'Idempotency-Key': key})\n    r2 = client.post('/api/pay', json=payment, headers={'Idempotency-Key': key})\n    assert r1.json()['id'] == r2.json()['id']",
+    "description": "API idempotency testing: verifies idempotent payment requests with same key return identical transaction IDs."
+  },
+  {
+    "id": "fe29e803-e373-4c2c-b885-6034c5337bfe",
+    "domain": "api",
+    "code_snippet": "def test_oauth_scope():\n    r = client.get('/api/admin', headers={'Authorization': f'Bearer {user_token}'})\n    assert r.status_code == 403",
+    "description": "API authorization testing: tests admin endpoint returns 403 Forbidden when token lacks required OAuth scope permissions."
+  },
+  {
+    "id": "f11b5704-5a1c-49f0-93d9-f151a3368094",
+    "domain": "api",
+    "code_snippet": "def test_content_negotiation():\n    r = client.get('/api/report', headers={'Accept': 'application/xml'})\n    assert 'xml' in r.headers['Content-Type']",
+    "description": "API content negotiation testing: checks API content negotiation returns XML format when Accept header requests it."
+  },
+  {
+    "id": "580c3751-08df-4467-8c8f-7b4e42ff1330",
+    "domain": "api",
+    "code_snippet": "def test_etag_caching():\n    r1 = client.get('/api/resource/1')\n    etag = r1.headers['ETag']\n    r2 = client.get('/api/resource/1', headers={'If-None-Match': etag})\n    assert r2.status_code == 304",
+    "description": "API caching testing: tests ETag-based conditional GET returns 304 Not Modified for unchanged resources."
+  },
+  {
+    "id": "2e795740-054f-492c-89c1-1b2b1b208ac6",
+    "domain": "api",
+    "code_snippet": "def test_api_key_auth():\n    r = client.get('/api/data', headers={'X-API-Key': 'invalid'})\n    assert r.status_code == 401",
+    "description": "API key authentication testing: verifies API key authentication rejects requests with invalid or missing API keys."
+  },
+  {
+    "id": "02914af1-3d11-4678-9c17-4c8de10eb338",
+    "domain": "api",
+    "code_snippet": "def test_batch_endpoint():\n    r = client.post('/api/batch', json={'requests': [{'method': 'GET', 'url': '/users/1'}]})\n    assert r.status_code == 200\n    assert len(r.json()['responses']) == 1",
+    "description": "API batch endpoint testing: tests batch API endpoint processes multiple sub-requests and returns aggregated responses."
+  },
+  {
+    "id": "5d3375e9-9de9-4891-8aa6-13eb492d1a21",
+    "domain": "api",
+    "code_snippet": "pass",
+    "description": "API trivial test stub for minimal input edge case detection."
+  }
+]

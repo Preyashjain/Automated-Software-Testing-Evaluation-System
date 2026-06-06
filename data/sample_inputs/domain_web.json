@@ -1,0 +1,122 @@
+[
+  {
+    "id": "51e08936-7b8f-41df-8cfb-7188f4fe3a56",
+    "domain": "web",
+    "code_snippet": "def test_login_form():\n    driver.get('/login')\n    assert driver.find_element('id', 'username')",
+    "description": "Web UI testing: verifies the login form renders correctly with username and password fields visible on the browser page."
+  },
+  {
+    "id": "dac3f22f-5147-4b38-9ca0-5821ab9f927d",
+    "domain": "web",
+    "code_snippet": "def test_navbar_links():\n    for link in ['Home', 'About', 'Contact']:\n        assert page.locator(link).is_visible()",
+    "description": "Web frontend testing: validates all primary navigation links in the top navbar are visible and accessible to users."
+  },
+  {
+    "id": "44d280e2-f5b5-44fd-ab5c-edc0db929da9",
+    "domain": "web",
+    "code_snippet": "def test_responsive_layout():\n    page.set_viewport(375, 812)\n    assert page.query_selector('.mobile-menu')",
+    "description": "Web responsive design testing: checks layout behavior on mobile viewport sizes ensuring the hamburger menu appears."
+  },
+  {
+    "id": "05419f6b-0586-425c-b47c-f417e6225a7b",
+    "domain": "web",
+    "code_snippet": "def test_form_validation():\n    submit_empty_form()\n    assert 'required' in page.content()",
+    "description": "Web form testing: validates client-side form validation displays required field errors when submitting empty registration forms."
+  },
+  {
+    "id": "f5f3e3fa-620c-428a-ac8a-8c4e7eaeeb16",
+    "domain": "web",
+    "code_snippet": "def test_dark_mode_toggle():\n    toggle = page.locator('#theme-toggle')\n    toggle.click()\n    assert 'dark' in page.get_attribute('html', 'class')",
+    "description": "Web theme testing: tests the dark mode theme toggle switches the page class attribute and persists user preference."
+  },
+  {
+    "id": "40ba07ca-30a1-411b-8901-b13feca9f892",
+    "domain": "web",
+    "code_snippet": "def test_cookie_banner():\n    page.goto('/')\n    banner = page.locator('.cookie-consent')\n    assert banner.is_visible()\n    banner.locator('button.accept').click()\n    assert not banner.is_visible()",
+    "description": "Web cookie consent testing: ensures cookie consent banner appears on first visit and dismisses after accepting cookies."
+  },
+  {
+    "id": "a63523ce-fb3e-4323-afd2-92a824355973",
+    "domain": "web",
+    "code_snippet": "def test_search_autocomplete():\n    input_el = page.locator('#search')\n    input_el.fill('pyt')\n    suggestions = page.locator('.autocomplete-item')\n    assert suggestions.count() > 0",
+    "description": "Web search UI testing: tests search autocomplete suggests relevant results as the user types partial query strings."
+  },
+  {
+    "id": "d9675a59-319b-473a-a887-162cd6c6a128",
+    "domain": "web",
+    "code_snippet": "def test_modal_dialog():\n    page.click('#open-modal')\n    modal = page.locator('.modal')\n    assert modal.is_visible()\n    page.click('.modal-close')\n    assert not modal.is_visible()",
+    "description": "Web modal component testing: verifies modal dialog opens on trigger click and closes properly when the close button is pressed."
+  },
+  {
+    "id": "68642cf8-25eb-4658-b1d8-0ce3ac5baa9e",
+    "domain": "web",
+    "code_snippet": "def test_pagination():\n    page.click('.next-page')\n    assert '/page/2' in page.url\n    items = page.locator('.list-item')\n    assert items.count() == 10",
+    "description": "Web pagination testing: tests pagination controls navigate to the next page and display the correct number of list items."
+  },
+  {
+    "id": "28bf73a2-3334-447d-909d-b25ba1b78c60",
+    "domain": "web",
+    "code_snippet": "def test_image_lazy_load():\n    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')\n    img = page.locator('img[data-src]')\n    assert img.get_attribute('src') is not None",
+    "description": "Web performance UI testing: checks lazy-loaded images fetch their src attribute only after scrolling into the viewport."
+  },
+  {
+    "id": "b1ac1e91-4e48-41a9-a224-0917830582e3",
+    "domain": "web",
+    "code_snippet": "def test_breadcrumb():\n    page.goto('/products/electronics')\n    crumbs = page.locator('.breadcrumb a')\n    texts = [c.inner_text() for c in crumbs.all()]\n    assert 'Home' in texts and 'Products' in texts",
+    "description": "Web navigation testing: validates breadcrumb navigation shows correct hierarchy from home through category pages."
+  },
+  {
+    "id": "5be083c3-623f-407e-b5e4-f65bb10ef82e",
+    "domain": "web",
+    "code_snippet": "def test_tooltip():\n    icon = page.locator('.info-icon')\n    icon.hover()\n    tooltip = page.locator('.tooltip')\n    assert tooltip.is_visible()\n    assert 'help' in tooltip.inner_text().lower()",
+    "description": "Web accessibility testing: tests tooltip appears on hover over info icons and displays helpful contextual text."
+  },
+  {
+    "id": "ad2062dd-7139-44c3-bd4b-726d265ffcf1",
+    "domain": "web",
+    "code_snippet": "def test_tab_switching():\n    page.click('#tab-settings')\n    assert page.locator('#panel-settings').is_visible()\n    assert not page.locator('#panel-profile').is_visible()",
+    "description": "Web tab component testing: verifies tab component switches visible panel content when different tabs are selected."
+  },
+  {
+    "id": "6de137ab-b001-4253-b3de-a551bd23a11e",
+    "domain": "web",
+    "code_snippet": "def test_file_upload_ui():\n    page.set_input_files('#file-input', 'test.pdf')\n    preview = page.locator('.file-preview')\n    assert 'test.pdf' in preview.inner_text()",
+    "description": "Web file upload testing: tests file upload widget shows filename preview after user selects a document for upload."
+  },
+  {
+    "id": "add21b02-2931-4a74-9c96-2939bba55f60",
+    "domain": "web",
+    "code_snippet": "def test_accordion():\n    page.click('.accordion-header')\n    content = page.locator('.accordion-body')\n    assert content.is_visible()",
+    "description": "Web accordion component testing: checks accordion component expands content section when header is clicked by the user."
+  },
+  {
+    "id": "c99febc7-1c77-4a9f-b69d-bbca47726cf0",
+    "domain": "web",
+    "code_snippet": "def test_skeleton_loader():\n    page.goto('/dashboard')\n    loader = page.locator('.skeleton')\n    assert loader.count() > 0\n    page.wait_for_selector('.skeleton', state='hidden')",
+    "description": "Web loading state testing: tests skeleton loading placeholders appear during data fetch and disappear when content loads."
+  },
+  {
+    "id": "5bd1f601-1f65-434c-8b48-bb81409fa14a",
+    "domain": "web",
+    "code_snippet": "def test_dropdown_menu():\n    page.click('#user-menu')\n    menu = page.locator('.dropdown-items')\n    assert menu.is_visible()\n    assert menu.locator('text=Logout').is_visible()",
+    "description": "Web dropdown menu testing: verifies user dropdown menu opens and contains expected account action links including logout."
+  },
+  {
+    "id": "f404acd0-c881-4c0b-b1cf-12e35f3e5503",
+    "domain": "web",
+    "code_snippet": "def test_carousel():\n    page.click('.carousel-next')\n    active = page.locator('.carousel-slide.active')\n    assert active.get_attribute('data-index') == '1'",
+    "description": "Web carousel component testing: tests image carousel advances to the next slide when next button is clicked."
+  },
+  {
+    "id": "f23b481d-6e56-42fa-be7c-48042141e905",
+    "domain": "web",
+    "code_snippet": "def test_toast_notification():\n    page.click('#save-btn')\n    toast = page.locator('.toast-success')\n    assert toast.is_visible()\n    assert 'saved' in toast.inner_text().lower()",
+    "description": "Web notification testing: checks success toast notification appears after saving form data with confirmation message."
+  },
+  {
+    "id": "4d380468-ee43-46df-8e1a-39a3118084b0",
+    "domain": "web",
+    "code_snippet": "x=1",
+    "description": "Web trivial test placeholder with minimal code for edge case validation."
+  }
+]

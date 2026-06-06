@@ -1,0 +1,122 @@
+[
+  {
+    "id": "9b9c97fd-e0d3-4f7d-b3f7-2f8d4cca8a2d",
+    "domain": "performance",
+    "code_snippet": "def test_api_latency():\n    start = time.time()\n    r = client.get('/api/products')\n    elapsed = time.time() - start\n    assert r.status_code == 200\n    assert elapsed < 0.2",
+    "description": "Performance API latency testing: tests API product listing endpoint responds within 200ms latency threshold under normal load."
+  },
+  {
+    "id": "cc939dec-482f-42aa-8590-36331aec30f4",
+    "domain": "performance",
+    "code_snippet": "def test_concurrent_requests():\n    with ThreadPoolExecutor(max_workers=50) as pool:\n        results = list(pool.map(lambda: client.get('/api/health'), range(100)))\n    assert all(r.status_code == 200 for r in results)",
+    "description": "Performance concurrency testing: verifies health endpoint handles 100 concurrent requests from 50 worker threads without failures."
+  },
+  {
+    "id": "70767dc7-19d0-4b38-9ca2-4f6549989e02",
+    "domain": "performance",
+    "code_snippet": "def test_memory_usage():\n    tracemalloc.start()\n    process_large_dataset(10000)\n    current, peak = tracemalloc.get_traced_memory()\n    assert peak < 50 * 1024 * 1024",
+    "description": "Performance memory testing: tests memory consumption stays below 50MB peak when processing 10000 record dataset."
+  },
+  {
+    "id": "045ea081-8a8c-4055-a16a-cf7491ad8466",
+    "domain": "performance",
+    "code_snippet": "def test_db_query_time():\n    start = time.time()\n    db.query('SELECT * FROM orders WHERE status = %s', ['pending'])\n    assert time.time() - start < 0.05",
+    "description": "Performance database query testing: checks indexed database query on orders table completes within 50ms execution time."
+  },
+  {
+    "id": "92bfafd3-fdfa-4247-b9eb-687ba074c961",
+    "domain": "performance",
+    "code_snippet": "def test_cache_hit_rate():\n    for i in range(100):\n        cache.get(f'key_{i % 10}')\n    stats = cache.stats()\n    assert stats['hit_rate'] > 0.8",
+    "description": "Performance cache testing: tests in-memory cache achieves greater than 80% hit rate for repeated key access patterns."
+  },
+  {
+    "id": "d646fb6e-9ab7-4c42-8006-eade2f8e3a7f",
+    "domain": "performance",
+    "code_snippet": "def test_page_load_time():\n    start = time.time()\n    page.goto('/dashboard')\n    page.wait_for_load_state('networkidle')\n    assert time.time() - start < 3.0",
+    "description": "Performance page load testing: verifies dashboard page reaches network idle state within 3 second load time budget."
+  },
+  {
+    "id": "7cdb5c22-49dc-4dea-9cfc-7b65ac66fe69",
+    "domain": "performance",
+    "code_snippet": "def test_throughput():\n    start = time.time()\n    count = 0\n    while time.time() - start < 10:\n        client.get('/api/ping')\n        count += 1\n    assert count > 500",
+    "description": "Performance throughput testing: tests API ping endpoint sustains over 500 requests per 10 second interval throughput."
+  },
+  {
+    "id": "bc2393c4-ce98-494e-b9ce-a8de6d47709a",
+    "domain": "performance",
+    "code_snippet": "def test_gc_pressure():\n    import gc\n    gc.collect()\n    before = len(gc.get_objects())\n    run_batch_job()\n    gc.collect()\n    after = len(gc.get_objects())\n    assert after - before < 1000",
+    "description": "Performance garbage collection testing: checks batch job does not leak more than 1000 Python objects after garbage collection."
+  },
+  {
+    "id": "cf92d1d1-6b7d-42ba-a84a-a7df20d48f0d",
+    "domain": "performance",
+    "code_snippet": "def test_connection_pool_efficiency():\n    times = []\n    for _ in range(100):\n        start = time.time()\n        with pool.acquire() as conn:\n            conn.execute('SELECT 1')\n        times.append(time.time() - start)\n    assert statistics.mean(times) < 0.01",
+    "description": "Performance connection pool testing: tests connection pool acquire and release cycle averages under 10ms per operation."
+  },
+  {
+    "id": "6a24d6c0-9109-408d-8176-d43062236417",
+    "domain": "performance",
+    "code_snippet": "def test_serialization_speed():\n    data = [{'id': i, 'name': f'item_{i}'} for i in range(10000)]\n    start = time.time()\n    json.dumps(data)\n    assert time.time() - start < 0.5",
+    "description": "Performance serialization testing: verifies JSON serialization of 10000 item list completes within 500ms time limit."
+  },
+  {
+    "id": "f342a396-82ae-4e23-9104-f97272906d87",
+    "domain": "performance",
+    "code_snippet": "def test_image_optimization():\n    start = time.time()\n    optimized = optimize_image(large_image_path)\n    assert time.time() - start < 2.0\n    assert os.path.getsize(optimized) < os.path.getsize(large_image_path) * 0.3",
+    "description": "Performance image optimization testing: tests image optimization reduces file size by 70% within 2 second processing budget."
+  },
+  {
+    "id": "ccd165a8-60d9-4046-b7d3-bfed1153c788",
+    "domain": "performance",
+    "code_snippet": "def test_search_index_rebuild():\n    start = time.time()\n    search_index.rebuild(documents=5000)\n    assert time.time() - start < 30.0\n    assert search_index.document_count() == 5000",
+    "description": "Performance search index testing: checks search index rebuild for 5000 documents completes within 30 second SLA."
+  },
+  {
+    "id": "901f441e-60fe-4e7f-8c9b-6c65e6b842e1",
+    "domain": "performance",
+    "code_snippet": "def test_cold_start():\n    restart_service()\n    start = time.time()\n    r = wait_for_healthy(timeout=10)\n    assert r.status_code == 200\n    assert time.time() - start < 5.0",
+    "description": "Performance cold start testing: tests service cold start reaches healthy state within 5 seconds after container restart."
+  },
+  {
+    "id": "4b54b34a-93c0-44d6-b657-5d9f7045d8b5",
+    "domain": "performance",
+    "code_snippet": "def test_batch_processing():\n    start = time.time()\n    results = process_batch(range(1000))\n    assert time.time() - start < 10.0\n    assert len(results) == 1000",
+    "description": "Performance batch processing testing: verifies batch processor handles 1000 items within 10 second processing window."
+  },
+  {
+    "id": "b85f841a-c2e4-4da3-aa5b-7309e310f2f3",
+    "domain": "performance",
+    "code_snippet": "def test_compression_ratio():\n    original = generate_payload(size_mb=10)\n    compressed = gzip.compress(original)\n    ratio = len(compressed) / len(original)\n    assert ratio < 0.2",
+    "description": "Performance compression testing: tests gzip compression achieves better than 5:1 ratio on repetitive JSON payload data."
+  },
+  {
+    "id": "c62456ed-33f4-4735-8e39-be2a228c5786",
+    "domain": "performance",
+    "code_snippet": "def test_thread_safety():\n    counter = AtomicCounter()\n    threads = [Thread(target=counter.increment) for _ in range(100)]\n    for t in threads: t.start()\n    for t in threads: t.join()\n    assert counter.value == 100",
+    "description": "Performance thread safety testing: checks thread-safe counter maintains correct value under 100 concurrent increment operations."
+  },
+  {
+    "id": "badac786-9110-4eef-9cce-bb477a39cb45",
+    "domain": "performance",
+    "code_snippet": "def test_disk_io():\n    start = time.time()\n    write_and_read_file(size_mb=100)\n    assert time.time() - start < 5.0",
+    "description": "Performance disk I/O testing: tests 100MB file write and read cycle completes within 5 second disk I/O budget."
+  },
+  {
+    "id": "e7ec33d7-42f0-4b19-b8db-cc600295e1bd",
+    "domain": "performance",
+    "code_snippet": "def test_queue_drain():\n    for i in range(1000):\n        queue.enqueue(i)\n    start = time.time()\n    queue.drain_all()\n    assert time.time() - start < 2.0\n    assert queue.size() == 0",
+    "description": "Performance queue testing: verifies message queue drains 1000 items within 2 seconds with empty final state."
+  },
+  {
+    "id": "9f19e90c-fc14-44eb-b168-7b9209c42019",
+    "domain": "performance",
+    "code_snippet": "def test_render_performance():\n    start = time.time()\n    render_template('dashboard.html', data=large_dataset)\n    assert time.time() - start < 0.1",
+    "description": "Performance rendering testing: tests server-side template rendering with large dataset completes within 100ms."
+  },
+  {
+    "id": "20b15bc1-69d8-421d-b043-4a9e1fdb54c6",
+    "domain": "performance",
+    "code_snippet": "1+1",
+    "description": "Performance trivial arithmetic check for minimal complexity baseline."
+  }
+]

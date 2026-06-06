@@ -1,0 +1,122 @@
+[
+  {
+    "id": "7ebd477c-8758-40c1-a7d1-8c146ee50376",
+    "domain": "mobile",
+    "code_snippet": "def test_app_launch():\n    driver.launch_app()\n    assert driver.find_element('id', 'home_screen').is_displayed()",
+    "description": "Mobile app testing: tests mobile app launches successfully and displays the home screen element on startup."
+  },
+  {
+    "id": "164117d6-0109-4c37-90dd-c1c32a316551",
+    "domain": "mobile",
+    "code_snippet": "def test_swipe_gesture():\n    element = driver.find_element('id', 'carousel')\n    driver.swipe(left=200, start_x=300, start_y=400)\n    assert element.get_attribute('data-index') == '1'",
+    "description": "Mobile gesture testing: verifies swipe gesture on carousel advances to the next slide on touch devices."
+  },
+  {
+    "id": "6c4f2b0a-7b1f-4d3c-a939-81bf29d38313",
+    "domain": "mobile",
+    "code_snippet": "def test_push_notification():\n    send_push(device_token, {'title': 'Test', 'body': 'Hello'})\n    notif = driver.find_element('id', 'notification_banner')\n    assert 'Hello' in notif.text",
+    "description": "Mobile push notification testing: tests push notification delivery displays banner with correct message body on device."
+  },
+  {
+    "id": "0fc192cb-6101-4be9-b7ab-66196dd6c31d",
+    "domain": "mobile",
+    "code_snippet": "def test_offline_mode():\n    driver.set_network_connection(0)\n    driver.find_element('id', 'cached_content')\n    assert driver.find_element('id', 'offline_indicator').is_displayed()",
+    "description": "Mobile offline testing: checks app shows offline indicator and serves cached content when network is disabled."
+  },
+  {
+    "id": "2b547f64-0b6d-4ab0-a90f-974a1ecf6305",
+    "domain": "mobile",
+    "code_snippet": "def test_biometric_auth():\n    driver.find_element('id', 'login_biometric').click()\n    simulate_fingerprint()\n    assert driver.find_element('id', 'dashboard').is_displayed()",
+    "description": "Mobile biometric testing: tests biometric fingerprint authentication grants access to dashboard screen."
+  },
+  {
+    "id": "873f645f-389d-4602-9e0b-7ac7e9677867",
+    "domain": "mobile",
+    "code_snippet": "def test_orientation_change():\n    driver.rotate('LANDSCAPE')\n    layout = driver.find_element('id', 'main_layout')\n    assert layout.size['width'] > layout.size['height']",
+    "description": "Mobile orientation testing: verifies app layout adapts correctly when device orientation changes to landscape mode."
+  },
+  {
+    "id": "244ade74-f201-41d2-b085-909253c636aa",
+    "domain": "mobile",
+    "code_snippet": "def test_deep_link():\n    driver.open_url('myapp://product/42')\n    product = driver.find_element('id', 'product_detail')\n    assert '42' in product.get_attribute('data-id')",
+    "description": "Mobile deep link testing: tests deep link URL opens correct product detail screen with matching product ID."
+  },
+  {
+    "id": "875b69b5-5fad-4746-8107-b449665ba598",
+    "domain": "mobile",
+    "code_snippet": "def test_camera_permission():\n    driver.find_element('id', 'scan_qr').click()\n    dialog = driver.find_element('id', 'permission_dialog')\n    assert dialog.is_displayed()\n    driver.find_element('id', 'allow').click()",
+    "description": "Mobile permission testing: checks camera permission dialog appears and can be granted for QR code scanning feature."
+  },
+  {
+    "id": "d5ef3f62-cb75-4c46-8bf9-6b644c1dcc7d",
+    "domain": "mobile",
+    "code_snippet": "def test_background_resume():\n    driver.background_app(5)\n    driver.activate_app()\n    assert driver.find_element('id', 'session_restored').is_displayed()",
+    "description": "Mobile lifecycle testing: tests app restores user session state correctly after returning from background."
+  },
+  {
+    "id": "0f0bd15d-0dd2-4a9a-bdc2-a98d06ea1f3d",
+    "domain": "mobile",
+    "code_snippet": "def test_keyboard_dismiss():\n    field = driver.find_element('id', 'search_input')\n    field.click()\n    field.send_keys('test')\n    driver.hide_keyboard()\n    assert not driver.is_keyboard_shown()",
+    "description": "Mobile keyboard testing: verifies software keyboard can be dismissed after text input on mobile search field."
+  },
+  {
+    "id": "a9d2df3e-b61d-4dc7-a47d-b70c045c9f4a",
+    "domain": "mobile",
+    "code_snippet": "def test_pull_to_refresh():\n    driver.swipe(start_x=200, start_y=100, end_x=200, end_y=400)\n    loader = driver.find_element('id', 'refresh_loader')\n    assert loader.is_displayed()\n    WebDriverWait(driver, 10).until(EC.invisibility_of_element(loader))",
+    "description": "Mobile pull-to-refresh testing: tests pull-to-refresh gesture triggers data reload and hides loader when complete."
+  },
+  {
+    "id": "39d92245-1cbb-45f9-bfb9-19bf8db8f972",
+    "domain": "mobile",
+    "code_snippet": "def test_tab_bar_navigation():\n    driver.find_element('id', 'tab_profile').click()\n    assert driver.find_element('id', 'profile_screen').is_displayed()\n    driver.find_element('id', 'tab_home').click()\n    assert driver.find_element('id', 'home_screen').is_displayed()",
+    "description": "Mobile tab bar testing: checks bottom tab bar navigation switches between profile and home screens correctly."
+  },
+  {
+    "id": "f0c5a3a5-e570-4cbe-bd84-e303234ae2ab",
+    "domain": "mobile",
+    "code_snippet": "def test_share_sheet():\n    driver.find_element('id', 'share_button').click()\n    sheet = driver.find_element('id', 'share_sheet')\n    assert sheet.is_displayed()\n    assert driver.find_element('id', 'share_copy_link')",
+    "description": "Mobile share sheet testing: tests native share sheet opens with copy link option when share button is tapped."
+  },
+  {
+    "id": "a0bb3710-93c8-4fc0-a7bb-d1a1302b4aa7",
+    "domain": "mobile",
+    "code_snippet": "def test_app_crash_recovery():\n    trigger_crash()\n    driver.launch_app()\n    assert driver.find_element('id', 'crash_report_dialog').is_displayed()\n    driver.find_element('id', 'dismiss').click()",
+    "description": "Mobile crash recovery testing: verifies app shows crash recovery dialog and allows user to dismiss after unexpected crash."
+  },
+  {
+    "id": "9c7b0d5a-8201-451a-b07e-2b8bcc647201",
+    "domain": "mobile",
+    "code_snippet": "def test_location_services():\n    driver.find_element('id', 'nearby_stores').click()\n    allow = driver.find_element('id', 'location_allow')\n    allow.click()\n    stores = driver.find_elements('class', 'store_card')\n    assert len(stores) > 0",
+    "description": "Mobile location testing: tests location permission grant enables nearby stores feature to display results."
+  },
+  {
+    "id": "3f28c186-a261-4b4a-bc55-5f5b4db57339",
+    "domain": "mobile",
+    "code_snippet": "def test_in_app_purchase():\n    driver.find_element('id', 'buy_premium').click()\n    simulate_purchase_success()\n    assert driver.find_element('id', 'premium_badge').is_displayed()",
+    "description": "Mobile in-app purchase testing: checks in-app purchase flow completes and displays premium badge on user profile."
+  },
+  {
+    "id": "edd0565f-53a4-40b1-8d53-96e4076e46ba",
+    "domain": "mobile",
+    "code_snippet": "def test_accessibility_labels():\n    buttons = driver.find_elements('class', 'action_button')\n    for btn in buttons:\n        label = btn.get_attribute('content-desc')\n        assert label and len(label) > 0",
+    "description": "Mobile accessibility testing: tests all action buttons have non-empty accessibility content description labels."
+  },
+  {
+    "id": "9067f122-1806-4a94-ba33-965edf2c05f4",
+    "domain": "mobile",
+    "code_snippet": "def test_screenshot_prevention():\n    driver.find_element('id', 'sensitive_screen').click()\n    assert driver.get_window_size()['secure'] is True",
+    "description": "Mobile screenshot prevention testing: verifies sensitive screens enable screenshot prevention flag on secure content views."
+  },
+  {
+    "id": "6e061ecc-06d5-4120-8728-8dc9c2ae04ae",
+    "domain": "mobile",
+    "code_snippet": "def test_multi_tap_prevention():\n    btn = driver.find_element('id', 'submit_order')\n    for _ in range(5):\n        btn.click()\n    orders = get_order_count()\n    assert orders == 1",
+    "description": "Mobile tap debounce testing: tests submit button debouncing prevents duplicate order creation from rapid multi-tap."
+  },
+  {
+    "id": "1d9d38df-46ba-4d19-b16a-144874827b10",
+    "domain": "mobile",
+    "code_snippet": "x=1",
+    "description": "Mobile trivial test stub for minimal input edge case validation."
+  }
+]

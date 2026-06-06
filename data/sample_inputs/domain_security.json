@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ba2c8402-7355-46ac-9f48-21e4e3864466",
+    "domain": "security",
+    "code_snippet": "def test_sql_injection():\n    payload = \"' OR '1'='1\"\n    r = client.get(f'/api/search?q={payload}')\n    assert r.status_code != 500\n    assert 'admin' not in r.text",
+    "description": "Security SQL injection testing: tests SQL injection payload in search parameter does not expose admin data or cause server errors."
+  },
+  {
+    "id": "e5fe0fdc-411b-4de0-8698-525fad2c796c",
+    "domain": "security",
+    "code_snippet": "def test_xss_prevention():\n    r = client.post('/api/comments', json={'text': '<script>alert(1)</script>'})\n    assert '<script>' not in r.json()['text']",
+    "description": "Security XSS testing: verifies stored XSS payloads are sanitized before persisting and returning user comment content."
+  },
+  {
+    "id": "75effab0-9f90-4e29-98d6-ead4f9c051d0",
+    "domain": "security",
+    "code_snippet": "def test_csrf_token():\n    r = client.post('/api/transfer', json={'amount': 100})\n    assert r.status_code == 403",
+    "description": "Security CSRF testing: tests CSRF protection blocks state-changing requests submitted without valid anti-CSRF token."
+  },
+  {
+    "id": "5eb627a7-05e6-4df2-a1a4-0b605f3a9ebf",
+    "domain": "security",
+    "code_snippet": "def test_password_hashing():\n    user = db.create_user('test', 'P@ssw0rd!')\n    assert user.password != 'P@ssw0rd!'\n    assert bcrypt.checkpw(b'P@ssw0rd!', user.password.encode())",
+    "description": "Security password testing: checks user passwords are stored as bcrypt hashes rather than plaintext in the database."
+  },
+  {
+    "id": "e082935d-4f8e-4eea-8147-c8cff2a57ceb",
+    "domain": "security",
+    "code_snippet": "def test_jwt_expiry():\n    token = create_token(user_id=1, exp=datetime.utcnow() - timedelta(hours=1))\n    r = client.get('/api/profile', headers={'Authorization': f'Bearer {token}'})\n    assert r.status_code == 401",
+    "description": "Security JWT testing: tests expired JWT tokens are rejected with 401 Unauthorized on protected API endpoints."
+  },
+  {
+    "id": "3f8230a7-6090-40ad-a246-57e8577be822",
+    "domain": "security",
+    "code_snippet": "def test_brute_force_lockout():\n    for i in range(6):\n        client.post('/api/login', json={'user': 'admin', 'pass': 'wrong'})\n    r = client.post('/api/login', json={'user': 'admin', 'pass': 'wrong'})\n    assert r.status_code == 429",
+    "description": "Security brute force testing: verifies account lockout activates after repeated failed login attempts exceeding threshold."
+  },
+  {
+    "id": "85e5fa7e-e20c-40d5-963f-cb66dc8b5856",
+    "domain": "security",
+    "code_snippet": "def test_path_traversal():\n    r = client.get('/api/files?path=../../etc/passwd')\n    assert r.status_code in (400, 403)\n    assert 'root:' not in r.text",
+    "description": "Security path traversal testing: tests path traversal attack attempting to read system files is blocked by input validation."
+  },
+  {
+    "id": "7b08aa4d-38c2-469f-b10e-0069f57f71eb",
+    "domain": "security",
+    "code_snippet": "def test_https_redirect():\n    r = client.get('http://example.com/login', allow_redirects=False)\n    assert r.status_code == 301\n    assert r.headers['Location'].startswith('https://')",
+    "description": "Security HTTPS testing: checks HTTP requests to sensitive endpoints are redirected to HTTPS protocol."
+  },
+  {
+    "id": "ddeb68e8-d279-4218-b98a-088b694a2584",
+    "domain": "security",
+    "code_snippet": "def test_security_headers():\n    r = client.get('/')\n    assert 'X-Content-Type-Options' in r.headers\n    assert 'X-Frame-Options' in r.headers\n    assert 'Content-Security-Policy' in r.headers",
+    "description": "Security headers testing: verifies security response headers are present on all pages to prevent common web attacks."
+  },
+  {
+    "id": "6341af3f-e5d4-4a31-84dd-9486971341ee",
+    "domain": "security",
+    "code_snippet": "def test_session_fixation():\n    old_session = client.cookies.get('session_id')\n    client.post('/api/login', json=creds)\n    new_session = client.cookies.get('session_id')\n    assert old_session != new_session",
+    "description": "Security session testing: tests session ID is regenerated after successful login to prevent session fixation attacks."
+  },
+  {
+    "id": "3d1405fc-cb49-4011-b737-0f4ae3dd80b4",
+    "domain": "security",
+    "code_snippet": "def test_privilege_escalation():\n    r = client.put('/api/users/1/role', json={'role': 'admin'}, headers=user_headers)\n    assert r.status_code == 403",
+    "description": "Security privilege testing: verifies regular users cannot escalate privileges by modifying their own role assignment."
+  },
+  {
+    "id": "661223e2-0641-4a05-996e-601d5122733b",
+    "domain": "security",
+    "code_snippet": "def test_input_length_limit():\n    r = client.post('/api/profile', json={'bio': 'x' * 100000})\n    assert r.status_code == 400",
+    "description": "Security input validation testing: tests input length validation rejects excessively large payload fields to prevent DoS attacks."
+  },
+  {
+    "id": "7fc02d47-80ba-4bac-b966-f1acfc627023",
+    "domain": "security",
+    "code_snippet": "def test_oauth_state_param():\n    r = client.get('/oauth/callback?code=abc&state=invalid')\n    assert r.status_code == 400",
+    "description": "Security OAuth testing: checks OAuth callback validates state parameter to prevent CSRF in authorization flow."
+  },
+  {
+    "id": "351e6221-7ce0-4f5e-8433-92b9931ed7b8",
+    "domain": "security",
+    "code_snippet": "def test_sensitive_data_masking():\n    log = capture_logs(lambda: process_payment(card='4111111111111111'))\n    assert '4111111111111111' not in log",
+    "description": "Security data masking testing: verifies credit card numbers are masked in application logs and never stored in plaintext."
+  },
+  {
+    "id": "d970e2fb-34cd-4d1a-b790-14b1a94cbfd4",
+    "domain": "security",
+    "code_snippet": "def test_file_upload_validation():\n    r = client.post('/api/upload', files={'file': ('evil.php', b'<?php system($_GET[c]); ?>')})\n    assert r.status_code == 400",
+    "description": "Security file upload testing: tests file upload rejects executable file types and validates MIME type against allowlist."
+  },
+  {
+    "id": "ab2d437c-94d2-4067-a0ab-976e7366a1cf",
+    "domain": "security",
+    "code_snippet": "def test_rate_limit_auth():\n    for i in range(20):\n        client.post('/api/login', json={'user': 'u', 'pass': 'p'})\n    r = client.post('/api/login', json={'user': 'u', 'pass': 'p'})\n    assert r.status_code == 429",
+    "description": "Security rate limiting testing: checks authentication endpoint rate limiting prevents credential stuffing attack patterns."
+  },
+  {
+    "id": "87eddb5a-c08a-41d7-9aa6-7fce0fd4f730",
+    "domain": "security",
+    "code_snippet": "def test_encryption_at_rest():\n    db.insert('secrets', {'key': 'api_key', 'value': encrypt('secret123')})\n    raw = db.raw_query('SELECT value FROM secrets WHERE key=\"api_key\"')\n    assert raw != 'secret123'",
+    "description": "Security encryption testing: tests sensitive data is encrypted at rest and not stored in readable plaintext format."
+  },
+  {
+    "id": "8c0a00cb-345b-4518-bc64-064e218be227",
+    "domain": "security",
+    "code_snippet": "def test_cors_origin_validation():\n    r = client.get('/api/data', headers={'Origin': 'https://evil.com'})\n    assert r.headers.get('Access-Control-Allow-Origin') != 'https://evil.com'",
+    "description": "Security CORS testing: verifies CORS policy does not reflect arbitrary origins from malicious cross-origin requests."
+  },
+  {
+    "id": "afe7e795-7430-4341-89db-e39d141bf1a1",
+    "domain": "security",
+    "code_snippet": "def test_mfa_enforcement():\n    r = client.post('/api/login', json={'user': 'admin', 'pass': 'correct'})\n    assert r.json()['mfa_required'] is True\n    assert 'token' not in r.json()",
+    "description": "Security MFA testing: tests multi-factor authentication is required for admin accounts before issuing access tokens."
+  },
+  {
+    "id": "6d7cd251-5b9b-41eb-9c16-e40c051e70d4",
+    "domain": "security",
+    "code_snippet": "ok=True",
+    "description": "Security minimal check placeholder for trivial input detection."
+  }
+]
